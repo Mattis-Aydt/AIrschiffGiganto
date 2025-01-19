@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/batteryLifeText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".5"
+            android:textSize="24sp"
+            android:gravity="bottom"
+
+            android:text="BatteryLife"/>
+
+        <ProgressBar
+            android:id="@+id/batteryLifeProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".2" />
+
+        <ToggleButton
+            android:id="@+id/onButton"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:textOff="OFF"
+            android:textOn="ON" />
+
+        <ToggleButton
+            android:id="@+id/lightsButton"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:textOff="Lights OFF"
+            android:textOn="Lights ON" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <SeekBar
+            android:id="@+id/speedBar"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:rotation="270"
+            android:rotationX="0" />
+    </LinearLayout>
+
+</LinearLayout>
