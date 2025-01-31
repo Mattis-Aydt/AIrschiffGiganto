@@ -8,7 +8,8 @@
 
 
 // Pin connected to ESC signal wire
-const int escPin = 18; // Change this to the pin you use
+const int esc1Pin = 18; // Change this to the pin you use
+const int esc2Pin = 19; // Change this to the pin you use
 
 // PWM settings
 const int pwmFreq = 50;       // 50 Hz for ESC
@@ -72,7 +73,8 @@ void initializeESC() {
   // Set up the PWM channel
   ledcSetup(pwmChannel, pwmFreq, pwmResolution);
   // Attach the PWM channel to the pin
-  ledcAttachPin(escPin, pwmChannel);
+  ledcAttachPin(esc1Pin, pwmChannel);
+  ledcAttachPin(esc2Pin, pwmChannel);
 
   // Send minimum signal to arm the ESC
   int dutyCycle = pulseWidthToDutyCycle(minPulse);
