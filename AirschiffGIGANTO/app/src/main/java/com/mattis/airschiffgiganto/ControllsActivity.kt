@@ -1,9 +1,7 @@
 package com.mattis.airschiffgiganto
 
-
 import android.os.Bundle
 import android.util.Log
-
 import android.widget.SeekBar
 import android.widget.ToggleButton
 import androidx.activity.ComponentActivity
@@ -12,16 +10,12 @@ import java.io.OutputStream
 import java.util.Timer
 import kotlin.concurrent.scheduleAtFixedRate
 
-
-
-
-class ControllsActivity  : ComponentActivity() {
+class ControllsActivity : ComponentActivity() {
 
     private val timer = Timer()
     private lateinit var speedBar: SeekBar
     private lateinit var onButton: ToggleButton
     private lateinit var lightsButton: ToggleButton
-    private var message_counter = 0
 
     private var outputStream: OutputStream? = null
 
@@ -34,38 +28,36 @@ class ControllsActivity  : ComponentActivity() {
         onButton = findViewById(R.id.onButton)
         lightsButton = findViewById(R.id.lightsButton)
 
-
         // Schedule a task to update text every second
         timer.scheduleAtFixedRate(0, 100) {
             val flags = ((if (onButton.isChecked) 1 else 0) shl 0) or  // Set lightsOn in bit 0
                     ((if (lightsButton.isChecked) 1 else 0) shl 1)
-            val buffer = ByteArray(3)
-            buffer[0] = speedBar.progress.toByte() // Speed (1 byte)
-            buffer[1] = message_counter.toByte() // Message counter (1 byte)
-            buffer[2] = flags.toByte() // Combined lightsOn and on/off (1 byte)
-            println(message_counter)
+
+            val speedByte = speedBar.progress.toByte() // Speed (1 byte)
+            val flagsByte = flags.toByte()            // Combined lightsOn and on/off (1 byte)
+
             println(speedBar.progress)
             println(flags)
-            message_counter += 1
-            sendDataToESP32(buffer)
 
+            sendDataToESP32(speedByte, flagsByte)
         }
     }
 
-
-
-    private fun sendDataToESP32(data: ByteArray) {
-        Log.i("System.out", "trying to send data")
+    private fun sendDataToESP32(speed: Byte, flags: Byte) {
+        Log.i("System.out", "Trying to send data")
         if (outputStream != null) {
             try {
-                outputStream?.write(data)
-                Log.i("System.out", "Sent data to ESP32: $data")
+                // Write the bytes individually to the OutputStream
+                outputStream?.write(speed.toInt())  // Send the speed byte
+                outputStream?.write(flags.toInt()) // Send the flags byte
+
+                Log.i("System.out", "Sent data to ESP32: Speed = $speed, Flags = $flags")
             } catch (e: IOException) {
                 Log.i("System.out", "Error sending data: ${e.message}")
                 e.printStackTrace()
             }
         } else {
-            Log.i("System.out", "not connected to ESP32")
+            Log.i("System.out", "Not connected to ESP32")
         }
     }
 }
